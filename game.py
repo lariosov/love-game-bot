@@ -119,6 +119,7 @@ async def start_game(call: CallbackQuery):
     await call.message.answer(text="Прогресс игры сброшен!")
     await call.message.answer(text=const.END_GAME_TEXT,
                               reply_markup=kb.main_menu())
+    end_game_session(call.message.chat.id)
     await call.answer()
     exit()
 
