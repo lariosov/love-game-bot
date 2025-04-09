@@ -1,6 +1,6 @@
 import app.const as const, app.database as db
-import app.keyboard as kb, app.game as game
-import os, asyncio
+import app.keyboard as kb
+import os, asyncio, subprocess
 
 # aiogram импорты
 from aiogram import Bot, Dispatcher, F
@@ -23,7 +23,8 @@ Telegram: @lariosov
 
 
 # основные настройки бота и БД
-bot = Bot(os.getenv("BOT_TOKEN"), parse_mode=ParseMode.HTML)
+bot = Bot(os.getenv("BOT_TOKEN"),
+          parse_mode=ParseMode.HTML)
 dp = Dispatcher()
 
 
@@ -46,12 +47,14 @@ async def menu(call: CallbackQuery):
 
 # игра начинается
 @dp.callback_query(F.data == "play")
-async def start_game(call: CallbackQuery):
+async def game_rules(call: CallbackQuery):
+    await call.message.answer(text=const.RULES,
+                              reply_markup=kb.ready())
     await call.answer(
-        "Игра начинается!",
+        "Ознакомьтесь с правилами!",
         show_alert=True,
     )
-    return game.start_game()
+    subprocess.call(['python3', 'game.py'])
 
 
 async def main():

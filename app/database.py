@@ -1,5 +1,9 @@
 import sqlite3
 
 
-def start_db():
+def connect_db():
+    pass
+
+
+def max_id():
     pass
