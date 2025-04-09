@@ -1,5 +1,5 @@
 import app.const as const, app.database as db
-import app.keyboard as kb
+import app.keyboard as kb, app.game as game
 import os, asyncio
 
 # aiogram импорты
@@ -37,11 +37,21 @@ async def start(message: Message) -> None:
     )
 
 
+# обработка меню
+@dp.callback_query(F.data == "menu")
+async def menu(call: CallbackQuery):
+    await call.message.answer(reply_markup=kb.main_menu())
+    await call.answer()
+
+
+# игра начинается
 @dp.callback_query(F.data == "play")
 async def start_game(call: CallbackQuery):
-    const.GAME_STATUS = 1
-    await call.message.answer("Игра начинается!")
-    await call.answer()
+    await call.answer(
+        "Игра начинается!",
+        show_alert=True,
+    )
+    return game.start_game()
 
 
 async def main():
